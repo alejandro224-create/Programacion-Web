@@ -1,0 +1,26 @@
+p{
+	background-color: yellow;
+}
+
+.my_parag:hover{
+	background-color: red;
+	color: white;
+}
+
+a.enlaces:hover{
+	color: red;
+}
+
+ul li:hover{
+	background-color: red;
+	color: white;
+}
+
+ul li:first-child{
+	background-color: yellow;
+}
+
+ul li:last-child{
+	background-color: magenta;
+	font-weight: bold;
+}
