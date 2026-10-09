@@ -1,5 +1,18 @@
 p{
-	background-color: yellow;
+	text-shadow: black 1px 0px 0px;
+	font-family: "my_style";
+	text-align: justify;
+	text-decoration: underline;
+	text-transform: uppercase;
+}
+
+@font-face{
+	font-family:"my_style";
+	src:url("../fonts/DelRose-Regular.ttf");
+}
+
+h1, h2{
+	font-family:"my_style";
 }
 
 .my_parag:hover{
@@ -24,3 +37,4 @@ ul li:last-child{
 	background-color: magenta;
 	font-weight: bold;
 }
+
