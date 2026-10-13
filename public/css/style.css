@@ -24,11 +24,15 @@ h1, h2, h3, h4{
 	padding: 8px;
 }
 
-.actividad-clase{
-	background-color: yellow;
-	border-radius: 10px;
-	border: 3px, solid, orange;
-	padding: 8px;
+.actividad-clase {
+    background-color: gray;
+    border-radius: 10px;
+    border: 3px solid lightgrey;
+    padding: 8px;
+    background-image: url("../../images/pngwing.com.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
 }
 
 .my_parag:hover{
