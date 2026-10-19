@@ -1,6 +1,20 @@
 body{
 	background-color: black;
 	color: white;
+	font-family: "my_style";
+}
+
+.container > div{
+	border-radius: 5px;
+  	padding: 10px;
+  	background-color: rgb(67, 45, 84);
+  	border: 2px solid rgb(117, 111, 122);
+}
+
+.container {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	gap: 10px;
 }
 
 .my_parag{
@@ -27,10 +41,6 @@ h1, h2, h3, h4{
 }
 
 .actividad-clase {
-    background-color: gray;
-    border-radius: 10px;
-    border: 3px solid lightgrey;
-    padding: 8px;
     background-image: url("../../images/pngwing.com.png");
     background-repeat: no-repeat;
     background-size: contain;
