@@ -7,12 +7,13 @@
 	<link rel="stylesheet" type="text/css" href="style_calculator.css">
 </head>
 <body>
-	<div class="Calculadora">
+	<div class="calculadora">
 		<div class="head">
-			<label id="calculadora_data">
+			<label class="calculadora_data" id="calculadora_data">
 				0
 			</label>
 		</div>
+		<br>
 		<div class="body_calculator">
 			<button onclick="clear_data()">
 				C
@@ -23,28 +24,28 @@
 			<button>
 				
 			</button>
-			<button>
+			<button onclick="setOperation('/')">
 				/
 			</button>
-			<button>
+			<button onclick="addNumber(7)">
 				7
 			</button>
-			<button>
+			<button onclick="addNumber(8)">
 				8
 			</button>
-			<button>
+			<button onclick="addNumber(9)">
 				9
 			</button>
 			<button>
 				*
 			</button>
-			<button>
+			<button onclick="addNumber(4)">
 				4
 			</button>
-			<button>
+			<button onclick="addNumber(5)">
 				5
 			</button>
-			<button >
+			<button onclick="addNumber(6)">
 				6
 			</button>
 			<button>
@@ -59,19 +60,19 @@
 			<button onclick="addNumber(3)">
 				3
 			</button>
-			<button>
+			<button onclick="setOperation('+')">
 				+
 			</button>
-			<button>
+			<button onclick="addNumber(0)">
 				0
 			</button>
-			<button>
-				
+			<button onclick="addNumber('.')">
+				.
 			</button>
 			<button>
 				
 			</button>
-			<button>
+			<button onclick="setOperation('=')">
 				=
 			</button>
 		</div>
