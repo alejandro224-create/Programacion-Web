@@ -15,119 +15,172 @@
 		</div>
 		<br>
 		<div class="body_calculator">
-			<button onclick="clear_data()">
+			<button class="btn btn-clear" onclick="clear_data()">
 				C
 			</button>
-			<button>
-				
+			<button class="btn btn-back" onclick="backspace()">
+				←
 			</button>
-			<button>
-				
+			<button class="btn btn-dark" onclick="setOperation('%')">
+				%
 			</button>
-			<button onclick="setOperation('/')">
+			<button class="btn btn-op" onclick="setOperation('/')">
 				/
 			</button>
-			<button onclick="addNumber(7)">
+			<button class="btn btn-dark" onclick="addNumber(7)">
 				7
 			</button>
-			<button onclick="addNumber(8)">
+			<button class="btn btn-dark" onclick="addNumber(8)">
 				8
 			</button>
-			<button onclick="addNumber(9)">
+			<button class="btn btn-dark" onclick="addNumber(9)">
 				9
 			</button>
-			<button>
+			<button class="btn btn-op" onclick="setOperation('*')">
 				*
 			</button>
-			<button onclick="addNumber(4)">
+			<button class="btn btn-dark" onclick="addNumber(4)">
 				4
 			</button>
-			<button onclick="addNumber(5)">
+			<button class="btn btn-dark" onclick="addNumber(5)">
 				5
 			</button>
-			<button onclick="addNumber(6)">
+			<button class="btn btn-dark" onclick="addNumber(6)">
 				6
 			</button>
-			<button>
+			<button class="btn btn-op" onclick="setOperation('-')">
 				-
 			</button>
-			<button onclick="addNumber(1)">
+			<button class="btn btn-dark" onclick="addNumber(1)">
 				1
 			</button>
-			<button onclick="addNumber(2)">
+			<button class="btn btn-dark" onclick="addNumber(2)">
 				2
 			</button>
-			<button onclick="addNumber(3)">
+			<button class="btn btn-dark" onclick="addNumber(3)">
 				3
 			</button>
-			<button onclick="setOperation('+')">
+			<button class="btn btn-op" onclick="setOperation('+')">
 				+
 			</button>
-			<button onclick="addNumber(0)">
+			<button class="btn btn-dark" onclick="addNumber(0)">
 				0
 			</button>
-			<button onclick="addNumber('.')">
+			<button class="btn btn-dark" onclick="addNumber('.')">
 				.
 			</button>
-			<button>
-				
-			</button>
-			<button onclick="setOperation('=')">
+			<button class="btn btn-equal" onclick="setOperation('=')">
 				=
 			</button>
 		</div>
 	</div>
 </body>
 <script>
+	var num1 = null;
+	var operation = "";
+	var resetOnNextNumber = false;
 
-	var num1 = 0
-	var num2 = 0
-
-	var operation = ""
-
-
-
-	function clear_data(){
-		let data = document.getElementById("calculadora_data")
-
-		data.innerHTML = "0"
+	function clear_data() {
+		let data = document.getElementById("calculadora_data");
+		data.innerHTML = "0";
+		num1 = null;
+		operation = "";
+		resetOnNextNumber = false;
 	}
-	
-	function addNumber(value){
-		console.log(value)
 
-		let data = document.getElementById("calculadora_data")
-
-		console.log(data)
-
-		if (parseInt(data.innerHTML) <= 0){
-			data.innerHTML = value
-		}else{
-			data.innerHTML += value
+	function backspace() {
+		let data = document.getElementById("calculadora_data");
+		
+		if (data.innerHTML.length > 1) {
+			data.innerHTML = data.innerHTML.slice(0, -1);
+		} else {
+			data.innerHTML = "0";
 		}
 	}
 
-	function setOperation(_ope){
-		ope = _ope
+	function addNumber(value) {
+		let data = document.getElementById("calculadora_data");
 
-		let data = document.getElementById("calculadora_data")
-
-		if (parseInt(data.innerHTML) > 0 && num1 == 0){
-			num1 = parseInt(data.innerHTML)
-			data.innerHTML = "0"
+		if (resetOnNextNumber) {
+			data.innerHTML = value;
+			resetOnNextNumber = false;
+			return;
 		}
 
-		if (parseInt(data.innerHTML) > 0 && num2 == 0){
-			num2 = parseInt(data.innerHTML)
-			data.innerHTML = "0"
+		if (data.innerHTML === "0") {
+			data.innerHTML = value;
+		} else {
+			data.innerHTML += value;
+		}
+	}
+
+	function addDecimal() {
+		let data = document.getElementById("calculadora_data");
+
+		if (resetOnNextNumber) {
+			data.innerHTML = "0.";
+			resetOnNextNumber = false;
+			return;
 		}
 
-		if (_ope == '=') {
-			data.innerHTML = num1 + num2
-			num1 = 0
-			num2 = 0
+		if (!data.innerHTML.includes(".")) {
+			data.innerHTML += ".";
+		}
+	}
+
+	function setOperation(_ope) {
+		let data = document.getElementById("calculadora_data");
+		let currentVal = parseFloat(data.innerHTML);
+
+		if (_ope === '=') {
+			if (operation !== "" && num1 !== null) {
+				let result = calculate(num1, currentVal, operation);
+				data.innerHTML = result;
+				num1 = null;
+				operation = "";
+				resetOnNextNumber = true;
+			}
+			return;
 		}
 
+		if (num1 !== null && operation !== "" && !resetOnNextNumber) {
+			num1 = calculate(num1, currentVal, operation);
+			data.innerHTML = num1;
+		} else {
+			num1 = currentVal;
+		}
+
+		operation = _ope;
+		resetOnNextNumber = true;
+	}
+
+	function calculate(n1, n2, op) {
+		let res = 0;
+
+		switch (op) {
+			case '+':
+				res = n1 + n2;
+				break;
+			case '-':
+				res = n1 - n2;
+				break;
+			case '*':
+				res = n1 * n2;
+				break;
+			case '/':
+				if (n2 === 0) {
+					return "Error";
+				}
+				res = n1 / n2;
+				break;
+			case '%':
+				res = n1 % n2;
+				break;
+			default:
+				return n2;
+		}
+
+		return Math.round(res * 100000000) / 100000000;
 	}
 </script>
 </html>
