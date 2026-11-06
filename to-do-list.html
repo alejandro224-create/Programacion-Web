@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+    <link rel="stylesheet" href="public/css/style-to-do.css">
+    <!-- FontAwesome para los iconos de editar y eliminar -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Fondo dividido en dos colores -->
+    <div class="background">
+        <div class="bg-top"></div>
+        <div class="bg-bottom"></div>
+    </div>
+
+    <!-- Contenedor principal de la aplicación -->
+    <div class="app-container">
+        <div class="input-section">
+            <input type="text" id="taskInput" placeholder="Añadir nueva tarea...">
+            <button id="addBtn">Add</button>
+        </div>
+
+        <p class="task-count">You have <span id="count">0</span> task(s) to complete</p>
+
+        <ul id="taskList">
+            <!-- Las tareas se inyectarán aquí mediante JavaScript -->
+        </ul>
+    </div>
+
+    <script>
+    	const taskInput = document.getElementById('taskInput');
+		const addBtn = document.getElementById('addBtn');
+		const taskList = document.getElementById('taskList');
+		const countSpan = document.getElementById('count');
+
+		let taskCount = 0;
+
+		// Eventos para agregar tareas
+		addBtn.addEventListener('click', addTask);
+		taskInput.addEventListener('keypress', function(e) {
+    		if (e.key === 'Enter') addTask();
+		});
+
+		function addTask() {
+    		const text = taskInput.value.trim();
+    		if (text === '') return;
+
+    		const li = document.createElement('li');
+    		li.className = 'task-item';
+
+    		li.innerHTML = `
+        		<i class="fa-regular fa-circle check-circle"></i>
+        		<span class="task-text">${text}</span>
+        		<div class="action-btns">
+            		<button class="btn-edit"><i class="fa-solid fa-pen-to-square"></i></button>
+            		<button class="btn-delete"><i class="fa-solid fa-trash"></i></button>
+        		</div>
+    		`;
+
+    		// Referencias a los elementos creados
+    		const checkBtn = li.querySelector('.check-circle');
+    		const deleteBtn = li.querySelector('.btn-delete');
+    		const editBtn = li.querySelector('.btn-edit');
+    		const taskTextSpan = li.querySelector('.task-text');
+    		const actionBtns = li.querySelector('.action-btns');
+
+    		// Marcar como completada
+    		checkBtn.addEventListener('click', () => {
+        		li.classList.toggle('completed');
+        		if(li.classList.contains('completed')) {
+            		checkBtn.classList.replace('fa-circle', 'fa-circle-check');
+            		checkBtn.classList.replace('fa-regular', 'fa-solid');
+        		} else {
+            		checkBtn.classList.replace('fa-circle-check', 'fa-circle');
+            		checkBtn.classList.replace('fa-solid', 'fa-regular');
+        		}
+    		});
+
+    		// Eliminar tarea
+    		deleteBtn.addEventListener('click', () => {
+        		li.remove();
+        		updateCount(-1);
+    		});
+
+    		// Editar tarea (Modo en línea)
+    		editBtn.addEventListener('click', () => {
+        		const currentText = taskTextSpan.innerText;
+        
+        		const editInput = document.createElement('input');
+        		editInput.type = 'text';
+        		editInput.value = currentText;
+        		editInput.className = 'task-input-edit';
+
+        		const saveBtn = document.createElement('button');
+        		saveBtn.innerHTML = '<i class="fa-solid fa-check"></i>';
+        		saveBtn.className = 'btn-save';
+
+        		// Reemplazar texto con input
+        		li.insertBefore(editInput, taskTextSpan);
+        		li.removeChild(taskTextSpan);
+        
+        		// Actualizar botones
+        		actionBtns.innerHTML = '';
+        		actionBtns.appendChild(saveBtn);
+        		actionBtns.appendChild(deleteBtn);
+
+        		editInput.focus();
+
+        		// Función para guardar los cambios
+        		const saveTask = () => {
+            		const newText = editInput.value.trim();
+            		if(newText !== '') {
+                		taskTextSpan.innerText = newText;
+            		}
+            
+            		li.insertBefore(taskTextSpan, editInput);
+            		li.removeChild(editInput);
+            
+            		actionBtns.innerHTML = '';
+            		actionBtns.appendChild(editBtn);
+            		actionBtns.appendChild(deleteBtn);
+        		};
+
+        		saveBtn.addEventListener('click', saveTask);
+        		editInput.addEventListener('keypress', (e) => {
+            		if (e.key === 'Enter') saveTask();
+        		});
+    		});
+
+    		// Añadir a la lista y limpiar input
+    		taskList.appendChild(li);
+    		taskInput.value = '';
+    		updateCount(1);
+		}
+
+		// Función para actualizar el número de tareas
+		function updateCount(change) {
+    		taskCount += change;
+    		countSpan.innerText = taskCount;
+		}
+    </script>
+</body>
+</html>
